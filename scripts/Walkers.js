@@ -58,17 +58,18 @@ document.addEventListener(
                 }
 
                 //Find the city name for each city the walker services using the city IDs
-                let currentWalkerCityNames = "";
+                let currentWalkerCityNames = [];
                 for (let city of cities) {
                     for (let walkerCityId of currentWalkerCityIds) {
                         if (city.id === walkerCityId) {
-                            currentWalkerCityNames += `${city.name} `
+                            currentWalkerCityNames.push(city.name)
                         }
                     }
                 }
+                let cityNames = currentWalkerCityNames.join(" and ");
 
                 //Create an alert message when the walker is clicked on from the web page
-                window.alert(`${walkerName} services ${currentWalkerCityNames}`)
+                window.alert(`${walkerName} services ${cityNames}`)
                 
         }
     }
