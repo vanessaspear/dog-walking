@@ -1,4 +1,10 @@
-import { getWalkers } from "./database.js"
+import { getWalkerCities, getWalkers, getCities } from "./database.js"
+
+const walkers = getWalkers()
+
+const cities = getCities();
+
+const walkerCities = getWalkerCities();
 
 document.addEventListener(
     "click",  // This is the type of event
@@ -34,25 +40,39 @@ document.addEventListener(
 
             /*
                 Now that you have the primary key of a walker object,
-                find the whole object by iterating the walkers array.
+                iterate the walkerCities array and compare the walkerID to the walkerCities.walkerID.  If a match is found, add the cityID to the currentWalkerCity array.
             */
-            for (const walker of walkers) {
+                //find the walker's name 
+                let walkerName = "";
+                for (let walker of walkers)
+                    if (parseInt(walkerId) === walker.id) {
+                        walkerName = walker.name;
+                    }
 
-                /*
-                    Compare the primary key of each walker to the one
-                    you have. As soon as you find the right one, display
-                    the window alert message.
-                */
-                if (walker.id === parseInt(walkerId)) {
-                    window.alert(`${walker.name} services ${walker.city}`)
+                //Find the city IDs for each city the walker services
+                let currentWalkerCityIds = [];
+                for (let city of walkerCities) {
+                    if (parseInt(walkerId) === city.walkerId) {
+                        currentWalkerCityIds.push(city.cityId);
+                    }
                 }
-            }
+
+                //Find the city name for each city the walker services using the city IDs
+                let currentWalkerCityNames = "";
+                for (let city of cities) {
+                    for (let walkerCityId of currentWalkerCityIds) {
+                        if (city.id === walkerCityId) {
+                            currentWalkerCityNames += `${city.name} `
+                        }
+                    }
+                }
+
+                //Create an alert message when the walker is clicked on from the web page
+                window.alert(`${walkerName} services ${currentWalkerCityNames}`)
+                
         }
     }
 )
-
-const walkers = getWalkers()
-
 
 export const Walkers = () => {
     let walkerHTML = "<ul>"
@@ -66,3 +86,17 @@ export const Walkers = () => {
     return walkerHTML;
 }
 
+/*
+
+ walkers: [{
+        id: 1,
+        name: "Alphonse Meron",
+        email: "ameron0@mashable.com",
+        city: "Chicago"
+
+walkerCities: [
+        { id: 1, walkerId: 10, cityId: 1 },
+
+ cities: [
+        { id: 1, name: "Pittsburgh"},
+*/
